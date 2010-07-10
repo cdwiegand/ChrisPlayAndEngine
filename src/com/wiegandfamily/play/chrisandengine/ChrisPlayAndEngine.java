@@ -31,7 +31,6 @@ public class ChrisPlayAndEngine extends BaseGameActivity {
 	private static int CAMERA_HEIGHT = 800;
 	private Camera mCamera;
 	private Texture mTexture;
-	private TiledTextureRegion mFaceTextureRegion;
 
 	// ===========================================================
 	// Constructors
@@ -57,11 +56,8 @@ public class ChrisPlayAndEngine extends BaseGameActivity {
 
 	@Override
 	public void onLoadResources() {
-		this.mTexture = new Texture(64, 32, TextureOptions.BILINEAR);
-		this.mFaceTextureRegion = TextureRegionFactory.createTiledFromAsset(
-				this.mTexture, this, "gfx/circleface_tiled.png", 0, 0, 2, 1);
-
-		this.mEngine.getTextureManager().loadTexture(this.mTexture);
+		mTexture = new Texture(64, 32, TextureOptions.BILINEAR);
+		this.mEngine.getTextureManager().loadTexture(mTexture);
 	}
 
 	@Override
@@ -110,14 +106,17 @@ public class ChrisPlayAndEngine extends BaseGameActivity {
 	// ===========================================================
 
 	public Thread CreateBall(float x, float y, Scene scene) {
+		TiledTextureRegion mFaceTextureRegion = TextureRegionFactory.createTiledFromAsset(
+				mTexture, this, "gfx/circleface_tiled.png", 0, 0, 2, 1);
+		
 		if (x == 0)
-			x = (int) ((CAMERA_WIDTH - this.mFaceTextureRegion.getWidth()) * Math
+			x = (int) ((CAMERA_WIDTH - mFaceTextureRegion.getWidth()) * Math
 					.random());
 		if (y == 0)
-			y = (int) ((CAMERA_HEIGHT - this.mFaceTextureRegion.getHeight()) * Math
+			y = (int) ((CAMERA_HEIGHT - mFaceTextureRegion.getHeight()) * Math
 					.random());
 
-		final Ball ball = new Ball(x, y, this.mFaceTextureRegion);
+		final Ball ball = new Ball(x, y, mFaceTextureRegion);
 		ball.setVelocity(0f, 0f);
 		// ball.animate(100);
 
@@ -142,8 +141,8 @@ public class ChrisPlayAndEngine extends BaseGameActivity {
 			float directionX = 0 - sl.getDimensions()[0];
 			float directionY = 0 + sl.getDimensions()[1];
 
-			directionX *= 15 * Math.random();
-			directionY *= 15 * Math.random();
+			directionX *= 15 * (1+Math.random());
+			directionY *= 15 * (1+Math.random());
 
 			if (this.mX <= 0 && directionX < 0)
 				// on left edge going left
