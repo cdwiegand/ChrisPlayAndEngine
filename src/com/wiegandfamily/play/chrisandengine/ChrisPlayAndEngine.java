@@ -23,7 +23,6 @@ public class ChrisPlayAndEngine extends BaseGameActivity {
 	// Constants
 	// ===========================================================
 
-
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -67,22 +66,22 @@ public class ChrisPlayAndEngine extends BaseGameActivity {
 
 	@Override
 	public Scene onLoadScene() {
-		FPSLogger logger = new FPSLogger();
-		this.mEngine.registerPreFrameHandler(logger);
+		this.mEngine.registerPreFrameHandler(new FPSLogger());
 
 		final Scene scene = new Scene(1);
 		scene.setBackgroundColor((float) Math.random(), (float) Math.random(),
 				(float) Math.random());
 
-		final int x = (CAMERA_WIDTH - this.mFaceTextureRegion.getWidth()) / 2;
-		final int y = (CAMERA_HEIGHT - this.mFaceTextureRegion.getHeight()) / 2;
-		final Ball ball = new Ball(x, y, this.mFaceTextureRegion);
-		ball.setVelocity(0f, 0f);
-
-		t = new Thread(ball);
+		t = CreateBall(0, 0, scene);
 		t.start();
-
-		scene.getTopLayer().addEntity(ball);
+		t2 = CreateBall(0, 0, scene);
+		t2.start();
+		t3 = CreateBall(0, 0, scene);
+		t3.start();
+		t4 = CreateBall(0, 0, scene);
+		t4.start();
+		t5 = CreateBall(0, 0, scene);
+		t5.start();
 
 		return scene;
 	}
@@ -101,10 +100,32 @@ public class ChrisPlayAndEngine extends BaseGameActivity {
 
 	public static final MySensorListener sl = new MySensorListener();
 	public static Thread t = null;
+	public static Thread t2 = null;
+	public static Thread t3 = null;
+	public static Thread t4 = null;
+	public static Thread t5 = null;
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public Thread CreateBall(float x, float y, Scene scene) {
+		if (x == 0)
+			x = (int) ((CAMERA_WIDTH - this.mFaceTextureRegion.getWidth()) * Math
+					.random());
+		if (y == 0)
+			y = (int) ((CAMERA_HEIGHT - this.mFaceTextureRegion.getHeight()) * Math
+					.random());
+
+		final Ball ball = new Ball(x, y, this.mFaceTextureRegion);
+		ball.setVelocity(0f, 0f);
+		// ball.animate(100);
+
+		t = new Thread(ball);
+
+		scene.getTopLayer().addEntity(ball);
+		return t;
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes
@@ -121,6 +142,9 @@ public class ChrisPlayAndEngine extends BaseGameActivity {
 			float directionX = 0 - sl.getDimensions()[0];
 			float directionY = 0 + sl.getDimensions()[1];
 
+			directionX *= 15 * Math.random();
+			directionY *= 15 * Math.random();
+
 			if (this.mX <= 0 && directionX < 0)
 				// on left edge going left
 				directionX = 0;
@@ -129,7 +153,7 @@ public class ChrisPlayAndEngine extends BaseGameActivity {
 				// on right edge going right
 				directionX = 0;
 			}
-			this.mVelocityX = directionX * 10;
+			this.mVelocityX = directionX;
 
 			if (this.mY < 0 && directionY < 0)
 				// on top edge going up
@@ -139,7 +163,7 @@ public class ChrisPlayAndEngine extends BaseGameActivity {
 				// on bottom edge going down
 				directionY = 0;
 			}
-			this.mVelocityY = directionY * 10;
+			this.mVelocityY = directionY;
 
 			if (directionX == 0 || directionY == 0)
 				this.setCurrentTileIndex(1);
