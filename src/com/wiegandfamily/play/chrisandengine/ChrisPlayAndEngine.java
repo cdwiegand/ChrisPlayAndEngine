@@ -15,19 +15,21 @@ import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
 
 import android.hardware.SensorManager;
+import android.view.View;
+import android.view.View.OnClickListener;
 
 public class ChrisPlayAndEngine extends BaseGameActivity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
-	private static int CAMERA_WIDTH = 480;
-	private static int CAMERA_HEIGHT = 800;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
+	private static int CAMERA_WIDTH = 480;
+	private static int CAMERA_HEIGHT = 800;
 	private Camera mCamera;
 	private Texture mTexture;
 	private TiledTextureRegion mFaceTextureRegion;
